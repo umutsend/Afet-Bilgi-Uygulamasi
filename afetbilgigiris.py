@@ -8,7 +8,7 @@ while(True):
         k_adi=input("Kullanıcı adınız : ")
         sifre=input("Parolanız : ")      
         if k_adi==Kullanici_Adi[0] and sifre==Parola[0]:
-            print("Giriş başarılı")
+            print("Giriş başarılı hoş geldiniz {}".format(Kullanici_Adi[0]))
         else:
             print("Hatalı giriş.")
     elif secim1=="2":
