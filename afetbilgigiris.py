@@ -84,6 +84,74 @@ iller={
 
 Kullanici_Adi=[]
 Parola=[]
+def AfetBilgileri(Kullanici_Adi):
+    AfetBilgi=input("Afetler hakkında bilgi almaya hoş geldin {}. Bilgi almak istediğin afeti gir.\n1-Deprem nedir?\n2-Sel nedir?\n3-Çığ nedir?\n4-Heyelan nedir?\n5-Deprem çantasında neler olmalı.\n".format(Kullanici_Adi[0]))
+    AfetBilgi.lower()
+    if AfetBilgi=="1":
+        print("Deprem, yer sarsıntısı, seizma veya zelzele, yer kabuğunda beklenmedik bir anda ortaya çıkan enerji sonucunda meydana gelen sismik dalgalanmalar ve bu dalgaların yeryüzünü sarsması olayıdır. Sismik aktivite ile kastedilen meydana geldiği alandaki depremin frekansı, türü ve büyüklüğüdür.")
+    elif AfetBilgi=="2":
+        print(""""Sel, genellikle kuru olan araziyi sular altında bırakan bir su taşkını olayıdır."Akma halinde olan su" anlamına gelen kelime, gelgitin içeri akışına da uygulanabilmektedir. Taşkınlar hidroloji disiplinin bir çalışma alanıdır. Tarım, inşaat mühendisliği ve halk sağlığı gibi alanlarda önemli bir endişe kaynağıdır.""")
+
+    elif AfetBilgi=="4":
+        print("Heyelan ya da toprak kayması, zemini kaya veya yapay dolgu malzemesinden oluşan bir yamacın yer çekimi, eğim, su ve benzeri diğer kuvvetlerin etkisiyle aşağı ve dışa doğru hareketidir.")
+    elif AfetBilgi=="3":
+        print("Çığ, büyük miktarda kar kütlesinin dağdan aşağı kaymasıdır. Aşırı kar yağışlarında taze karın alttaki kar tabakasıyla iyi kaynaşmaması, yüksek ses, rüzgar, insan veya hayvanların oynak kar tabakasını harekete geçirmesi gibi sebeplerden meydana gelir. Büyüklüğüne göre can ve mal kaybına yol açabilir.")
+    elif AfetBilgi=="5":
+        print("--- DEPREM ÇANTASINDA BULUNMASI GEREKENLER ---\nKimlik bilgilerinin olduğu önemli belgelerin fotokopileri (pasaport, ehliyet, sigorta poliçeleri, banka hesap kayıt bilgilerini içeren belgeler. Evcil hayvan olması durumunda sağlık karnesi)\nİlk yardım çantası\nSu kişi başı 4 litre içme suyu")
+        print("Bozulmayan, kuru gıdalar (yüksek kalorili, vitamin ve karbonhidrat içeren gıdalar. Bunlar son kullanma tarihlerine göre yenilenmelidir\nRadyo\nSabun dezenfektan\nEl feneri\nPowerbank\nKağıt kalem\nYedek pil\nUyku tulumu battaniye\nÇakı düdük makas") 
+    else:
+        print("-- Hatalı tuşlama tekrar deneyin!! --")
+def DepremTesti():
+    while(True):
+        BinaYasim=int(input("Bina yaşınız: "))
+        DepremDerecesi=int(input("İlinizin deprem derecesi: "))
+        if BinaYasim>=27 and 1<=DepremDerecesi<=3:
+            print("Çok tehlikeli durumdasınız gerekli önlemleri alın deprem çantanızı yapın.")
+            break
+        elif BinaYasim>=27 and 3<DepremDerecesi<=5:
+            print("Orta risk içeren gruptasınız gerekli önlemleri alınız.")
+            break
+        elif 27<BinaYasim<=15 and 1<=DepremDerecesi<=3:
+            print("Riskli durumdasınız gerekli önlemleri almanız gerekiyor.")
+            break
+        elif 27<BinaYasim<=15 and 3<DepremDerecesi<=5:
+            print("Orta riskli konumdasınız dikkat edin. Önlem alabilirsiniz.")
+            break
+        elif BinaYasim<15 and 1<=DepremDerecesi<=3:
+            print("Riskli durumdasınız gerekli önlemleri almanız gerekiyor.")
+            break
+        elif BinaYasim<15 and 3<DepremDerecesi<=5:
+            print("Risksiz konumdasınız yine de deprem bilincinde olmanız önemli.")
+            break
+        else:
+            print("-- Hatalı giriş oldu tekrar girin --")
+            continue
+def İlBilgileri(Kullanici_Adi,iller):
+      while(True):  
+        il_secim=str(input("İl seçim ekranına hoş geldin {} bilgi almak istediğin ili yazman yeterli. çıkmak için çıkış yazabilirsin.\n".format(Kullanici_Adi[0])))
+        if il_secim in iller:
+            print(iller[il_secim])
+        elif il_secim=="çıkış":
+            break
+        else:
+            print("Yanlış giriş yaptınız.")
+
+
+
+
+
+
+
+
+
+
+
+
+Kullanici_Adi=[]
+Parola=[]
+    
+
+
 while(True):
     print("Afet bilgi programına hoş geldiniz.")
     print("1-Giriş yap\n2-Kaydol\n3-Şifremi unuttum")
@@ -121,54 +189,11 @@ while(True):
     print("3-Depremden korkmalı mıyım?")
     secim2=input()
     if secim2=="1":
-        il_secim=str(input("İl seçim ekranına hoş geldin {} bilgi almak istediğin ili yazman yeterli. çıkmak için çıkış yazabilirsin.\n".format(Kullanici_Adi[0])))
-        if il_secim in iller:
-            print(iller[il_secim])
-        elif il_secim=="çıkış":
-            break
-        else:
-            print("Yanlış giriş yaptınız.")
+        İlBilgileri(Kullanici_Adi, iller)
     elif secim2=="2":
-        AfetBilgi=input("Afetler hakkında bilgi almaya hoş geldin {}. Bilgi almak istediğin afeti gir.\n1-Deprem nedir?\n2-Sel nedir?\n3-Çığ nedir?\n4-Heyelan nedir?\n5-Deprem çantasında neler olmalı.\n".format(Kullanici_Adi[0]))
-        AfetBilgi.lower()
-        if AfetBilgi=="1":
-            print("Deprem, yer sarsıntısı, seizma veya zelzele, yer kabuğunda beklenmedik bir anda ortaya çıkan enerji sonucunda meydana gelen sismik dalgalanmalar ve bu dalgaların yeryüzünü sarsması olayıdır. Sismik aktivite ile kastedilen meydana geldiği alandaki depremin frekansı, türü ve büyüklüğüdür.")
-        elif AfetBilgi=="2":
-            print(""""Sel, genellikle kuru olan araziyi sular altında bırakan bir su taşkını olayıdır."Akma halinde olan su" anlamına gelen kelime, gelgitin içeri akışına da uygulanabilmektedir. Taşkınlar hidroloji disiplinin bir çalışma alanıdır. Tarım, inşaat mühendisliği ve halk sağlığı gibi alanlarda önemli bir endişe kaynağıdır.""")
-
-        elif AfetBilgi=="4":
-            print("Heyelan ya da toprak kayması, zemini kaya veya yapay dolgu malzemesinden oluşan bir yamacın yer çekimi, eğim, su ve benzeri diğer kuvvetlerin etkisiyle aşağı ve dışa doğru hareketidir.")
-        elif AfetBilgi=="3":
-            print("Çığ, büyük miktarda kar kütlesinin dağdan aşağı kaymasıdır. Aşırı kar yağışlarında taze karın alttaki kar tabakasıyla iyi kaynaşmaması, yüksek ses, rüzgar, insan veya hayvanların oynak kar tabakasını harekete geçirmesi gibi sebeplerden meydana gelir. Büyüklüğüne göre can ve mal kaybına yol açabilir.")
-        elif AfetBilgi=="5":
-            print("--- DEPREM ÇANTASINDA BULUNMASI GEREKENLER ---\nKimlik bilgilerinin olduğu önemli belgelerin fotokopileri (pasaport, ehliyet, sigorta poliçeleri, banka hesap kayıt bilgilerini içeren belgeler. Evcil hayvan olması durumunda sağlık karnesi)\nİlk yardım çantası\nSu kişi başı 4 litre içme suyu")
-            print("Bozulmayan, kuru gıdalar (yüksek kalorili, vitamin ve karbonhidrat içeren gıdalar. Bunlar son kullanma tarihlerine göre yenilenmelidir\nRadyo\nSabun dezenfektan\nEl feneri\nPowerbank\nKağıt kalem\nYedek pil\nUyku tulumu battaniye\nÇakı düdük makas") 
-        else:
-            print("-- Hatalı tuşlama tekrar deneyin!! --")
+        AfetBilgileri(Kullanici_Adi)
     elif secim2=="3":
-        while(True):
-            BinaYasim=int(input("Bina yaşınız: "))
-            DepremDerecesi=int(input("İlinizin deprem derecesi: "))
-            if BinaYasim>=27 and 1<=DepremDerecesi<=3:
-                print("Çok tehlikeli durumdasınız gerekli önlemleri alın deprem çantanızı yapın.")
-                break
-            elif BinaYasim>=27 and 3<DepremDerecesi<=5:
-                print("Orta risk içeren gruptasınız gerekli önlemleri alınız.")
-                break
-            elif 27<BinaYasim<=15 and 1<=DepremDerecesi<=3:
-                print("Riskli durumdasınız gerekli önlemleri almanız gerekiyor.")
-                break
-            elif 27<BinaYasim<=15 and 3<DepremDerecesi<=5:
-                print("Orta riskli konumdasınız dikkat edin. Önlem alabilirsiniz.")
-                break
-            elif BinaYasim<15 and 1<=DepremDerecesi<=3:
-                print("Riskli durumdasınız gerekli önlemleri almanız gerekiyor.")
-                break
-            elif BinaYasim<15 and 3<DepremDerecesi<=5:
-                print("Risksiz konumdasınız yine de deprem bilincinde olmanız önemli.")
-                break
-            else:
-                print("-- Hatalı giriş oldu tekrar girin --")
-                continue
+        DepremTesti()
+       
             
             
