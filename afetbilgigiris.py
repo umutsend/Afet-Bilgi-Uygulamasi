@@ -82,10 +82,8 @@ iller={
 "düzce":["--- DÜZCE ---\nDeprem riski = 1. Derece\n 1900-2013 arası sel felaketi sayısı = 0 \n 1900-2013 Çığ felaketi sayısı = 0 \n1900-2013 arası heyelan sayı aralığı =  1-10"],
 }
 
-Kullanici_Adi=[]
-Parola=[]
-def AfetBilgileri(Kullanici_Adi):
-    AfetBilgi=input("Afetler hakkında bilgi almaya hoş geldin {}. Bilgi almak istediğin afeti gir.\n1-Deprem nedir?\n2-Sel nedir?\n3-Çığ nedir?\n4-Heyelan nedir?\n5-Deprem çantasında neler olmalı.\n".format(Kullanici_Adi[0]))
+def AfetBilgileri(k_adi):
+    AfetBilgi=input("Afetler hakkında bilgi almaya hoş geldin {}. Bilgi almak istediğin afeti gir.\n1-Deprem nedir?\n2-Sel nedir?\n3-Çığ nedir?\n4-Heyelan nedir?\n5-Deprem çantasında neler olmalı.\n".format(k_adi))
     AfetBilgi.lower()
     if AfetBilgi=="1":
         print("Deprem, yer sarsıntısı, seizma veya zelzele, yer kabuğunda beklenmedik bir anda ortaya çıkan enerji sonucunda meydana gelen sismik dalgalanmalar ve bu dalgaların yeryüzünü sarsması olayıdır. Sismik aktivite ile kastedilen meydana geldiği alandaki depremin frekansı, türü ve büyüklüğüdür.")
@@ -126,74 +124,80 @@ def DepremTesti():
         else:
             print("-- Hatalı giriş oldu tekrar girin --")
             continue
-def İlBilgileri(Kullanici_Adi,iller):
-      while(True):  
-        il_secim=str(input("İl seçim ekranına hoş geldin {} bilgi almak istediğin ili yazman yeterli. çıkmak için çıkış yazabilirsin.\n".format(Kullanici_Adi[0])))
+def İlBilgileri(k_adi,iller):
+       while(True):  
+        il_secim=str(input("İl seçim ekranına hoş geldin {} bilgi almak istediğin ili yazman yeterli. çıkmak için çıkış yazabilirsin.\n".format(k_adi)))
         if il_secim in iller:
             print(iller[il_secim])
         elif il_secim=="çıkış":
             break
         else:
             print("Yanlış giriş yaptınız.")
+       
 
-
-
-
-
-
-
-
-
-
-
-
-Kullanici_Adi=[]
-Parola=[]
     
 
 
+import sqlite3
+conn = sqlite3.connect('KullaniciHesaplari.db')
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS users
+             (k_adi TEXT, sifre TEXT, Yasadigi_il TEXT, bagis REAL)''')
+
+def deprembagisi():
+    print("Deprem bağışı yapıyor olman bizi çok mutlu etti.")
+    c.execute("SELECT SUM(bagis) FROM users")
+    toplam_bagis = c.fetchone()[0]
+    if toplam_bagis is None:
+        toplam_bagis = 0.0
+    print("An itibariyle toplam bağış miktarı:", toplam_bagis)
+    bagis_miktari = float(input("Bağışlamak istediğiniz tutar : "))
+    c.execute("INSERT INTO users (bagis) VALUES (?)", (bagis_miktari,))
+    conn.commit()
+    print("Bağışınız başarıyla kayedildi.")
+    
+
 while(True):
+    
     print("Afet bilgi programına hoş geldiniz.")
     print("1-Giriş yap\n2-Kaydol\n3-Şifremi unuttum")
     secim1=input()
     if secim1=="1":
         k_adi=input("Kullanıcı adınız : ")
         sifre=input("Parolanız : ")      
-        if k_adi==Kullanici_Adi[0] and sifre==Parola[0]:
-            print("Giriş başarılı {}".format(Kullanici_Adi[0]))
+        c.execute("SELECT * FROM users WHERE k_adi=? AND sifre=?", (k_adi, sifre))
+        result = c.fetchone()
+
+        if result:
+            print("Giriş başarılı!")
             break
         else:
-            print("Hatalı giriş.")
+            print("Kullanıcı adı veya şifre yanlış!")
     elif secim1=="2":
         k_adi=input("Kullanıcı adınızı belirleyin : ")
         sifre=input("Şifrenizi belirleyin = ")
+        il = input("İlinizi yazın = ")
         if len(sifre)<4:
             print("Sifreniz adınız minumum 4 karakter olabilir")
             continue
-        Kullanici_Adi.insert(0,k_adi)
-        Parola.insert(0,sifre)
+        c.execute("INSERT INTO users (k_adi, sifre, Yasadigi_il) VALUES (?, ?, ?)", (k_adi, sifre, il))
         print("Kayıt başarılı! Giriş yap diyerek programa gir.")
-    elif secim1=="3":
-        k_adi=input("Kullanıcı adınız :  ")
-        if k_adi==Kullanici_Adi[0]:
-            print("Kayıt bulundu.")
-            sifre=input("Yeni şifreniz : ")
-            Parola.insert(0, sifre)
-            print("Yeni şifreniz belirlendi.")
-        else:
-            print("Kayıt bulunamadı.")
+        
 while(True):
-    print("Hoş geldin {} açılan menüden işlemini seç".format(Kullanici_Adi[0]))
+    print("Hoş geldin {} açılan menüden işlemini seç".format(k_adi))
     print("1-İl girerek geçmiş afetler hakkında bilgi al")
     print("2-Afetler hakkında bilgi sahibi ol")
     print("3-Depremden korkmalı mıyım?")
-    secim2=input()
-    if secim2=="1":
-        İlBilgileri(Kullanici_Adi, iller)
-    elif secim2=="2":
-        AfetBilgileri(Kullanici_Adi)
-    elif secim2=="3":
+    print("4-Deprem bağışı yapmak istiyorum.")
+    print("5-Çıkış yap")
+    secim2=int(input())
+    if secim2==1:
+        İlBilgileri(k_adi, iller)
+    elif secim2==2:
+        AfetBilgileri(k_adi)
+    elif secim2==3:
         DepremTesti()
-       
-            
-            
+    elif secim2==4:
+        deprembagisi()
+    elif secim2==5:
+        break
