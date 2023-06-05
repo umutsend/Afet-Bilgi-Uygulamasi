@@ -152,7 +152,7 @@ def deprembagisi():
         toplam_bagis = 0.0
     print("An itibariyle toplam bağış miktarı:", toplam_bagis)
     bagis_miktari = float(input("Bağışlamak istediğiniz tutar : "))
-    c.execute("INSERT INTO users (bagis) VALUES (?)", (bagis_miktari,))
+    c.execute("INSERT INTO users (k_adi, sifre, Yasadigi_il,bagis) VALUES (?,?,?,?)", (k_adi, sifre, il,bagis_miktari,))
     conn.commit()
     print("Bağışınız başarıyla kayedildi.")
     
