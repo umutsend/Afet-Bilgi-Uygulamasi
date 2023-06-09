@@ -42,25 +42,27 @@ def DepremTesti():
         else:
             print("-- Hatalı giriş oldu tekrar girin --")
             continue
+
+def İlBilgileri():
+           import sqlite3
+           connect = sqlite3.connect('afetbilgileri.db')
+           a = connect.cursor()  
+           girilen_sehir=input("Sorgulamak istediğiniz şehir adı nedir? : ")
+           a.execute('SELECT * FROM sehirler WHERE il = ?', (girilen_sehir,))
+           result = a.fetchone()
+           if result:
+               deprem_riski = result[1]
+               diger_bilgiler = result[2]
+               print(f"{girilen_sehir} şehri için deprem riski: {deprem_riski}")
+               print(f"{girilen_sehir} şehri için diğer bilgiler: {diger_bilgiler}")
+           else:
+               print("Belirtilen şehir bulunamadı.")
 import sqlite3
 conn = sqlite3.connect('KullaniciHesaplari.db')
 
 c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS users
              (k_adi TEXT, sifre TEXT, Yasadigi_il TEXT, bagis REAL)''')
-def İlBilgileri():
-           connect = sqlite3.connect('afetbilgileri.db')
-           a = connect.cursor()  
-           girilen_sehir=input("Sorgulamak istediğiniz şehir adı nedir? : ")
-           a.execute('SELECT * FROM sehirler depremriski, digerbilgiler WHERE il = ?', (girilen_sehir,))
-           result = a.fetchone()
-           if result:
-               deprem_riski = result[0]
-               diger_bilgiler = result[1]
-               print(f"{il} şehri için deprem riski: {deprem_riski}")
-               print(f"{il} şehri için diğer bilgiler: {diger_bilgiler}")
-           else:
-               print("Belirtilen şehir bulunamadı.")
 def deprembagisi():
     print("Deprem bağışı yapıyor olman bizi çok mutlu etti.")
     c.execute("SELECT SUM(bagis) FROM users")
@@ -109,7 +111,8 @@ while(True):
     print("5-Çıkış yap")
     secim2=int(input())
     if secim2==1:
-        İlBilgileri()
+        g = İlBilgileri()
+        print(g)
     elif secim2==2:
         AfetBilgileri(k_adi)
     elif secim2==3:
