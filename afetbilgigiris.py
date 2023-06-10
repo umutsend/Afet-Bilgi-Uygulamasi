@@ -1,5 +1,29 @@
+import sqlite3
+conn = sqlite3.connect('KullaniciHesaplari.db')
 
-
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS users
+             (k_adi TEXT, sifre TEXT, bagis REAL)''')
+def menu(k_adi,sifre):
+    while(True):
+        print("Hoş geldin {} açılan menüden işlemini seç".format(k_adi))
+        print("1-İl girerek geçmiş afetler hakkında bilgi al")
+        print("2-Afetler hakkında bilgi sahibi ol")
+        print("3-Depremden korkmalı mıyım?")
+        print("4-Deprem bağışı yapmak istiyorum.")
+        print("5-Çıkış yap")
+        secim2=int(input())
+        if secim2==1:
+            g = İlBilgileri()
+            print(g)
+        elif secim2==2:
+            AfetBilgileri(k_adi)
+        elif secim2==3:
+            DepremTesti()
+        elif secim2==4:
+            deprembagisi(k_adi,sifre)
+        elif secim2==5:
+            break
 def AfetBilgileri(k_adi):
     AfetBilgi=input("Afetler hakkında bilgi almaya hoş geldin {}. Bilgi almak istediğin afeti gir.\n1-Deprem nedir?\n2-Sel nedir?\n3-Çığ nedir?\n4-Heyelan nedir?\n5-Deprem çantasında neler olmalı.\n".format(k_adi))
     AfetBilgi.lower()
@@ -42,7 +66,6 @@ def DepremTesti():
         else:
             print("-- Hatalı giriş oldu tekrar girin --")
             continue
-
 def İlBilgileri():
            import sqlite3
            connect = sqlite3.connect('afetbilgileri.db')
@@ -53,71 +76,55 @@ def İlBilgileri():
            if result:
                deprem_riski = result[1]
                diger_bilgiler = result[2]
-               print(f"{girilen_sehir} şehri için deprem riski: {deprem_riski}")
-               print(f"{girilen_sehir} şehri için diğer bilgiler: {diger_bilgiler}")
+               print("{} şehrin deprem riski {}".format(girilen_sehir,deprem_riski))
+               print("{} şehrin diğer afet bilgileri {}".format(girilen_sehir,diger_bilgiler))
            else:
                print("Belirtilen şehir bulunamadı.")
-import sqlite3
-conn = sqlite3.connect('KullaniciHesaplari.db')
 
-c = conn.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS users
-             (k_adi TEXT, sifre TEXT, Yasadigi_il TEXT, bagis REAL)''')
-def deprembagisi():
+def deprembagisi(k_adi,sifre):
     print("Deprem bağışı yapıyor olman bizi çok mutlu etti.")
     c.execute("SELECT SUM(bagis) FROM users")
     toplam_bagis = c.fetchone()[0]
     if toplam_bagis is None:
-        toplam_bagis = 0.0
+        toplam_bagis = 0
     print("An itibariyle toplam bağış miktarı:", toplam_bagis)
     bagis_miktari = float(input("Bağışlamak istediğiniz tutar : "))
-    c.execute("INSERT INTO users (k_adi, sifre, Yasadigi_il, bagis) VALUES (?,?,?,?)", (k_adi, sifre, il, bagis_miktari))
+    c.execute("INSERT INTO users (k_adi, sifre, bagis) VALUES (?,?,?)", (k_adi, sifre, bagis_miktari))
     conn.commit()
     print("Bağışınız başarıyla kayedildi.")
-    
+    conn.close()
+
+
+
 
 while(True):
-    
-    print("Afet bilgi programına hoş geldiniz.")
-    print("1-Giriş yap\n2-Kaydol\n")
-    secim1=input()
-    if secim1=="1":
-        k_adi=input("Kullanıcı adınız : ")
-        sifre=input("Parolanız : ")      
-        c.execute("SELECT * FROM users WHERE k_adi=? AND sifre=?", (k_adi, sifre))
-        result = c.fetchone()
-
-        if result:
-            print("Giriş başarılı!")
-            break
-        else:
-            print("Kullanıcı adı veya şifre yanlış!")
-    elif secim1=="2":
-        k_adi=input("Kullanıcı adınızı belirleyin : ")
-        sifre=input("Şifrenizi belirleyin = ")
-        il = input("İlinizi yazın = ")
-        if len(sifre)<4:
-            print("Sifreniz adınız minumum 4 karakter olabilir")
+        print("Afet bilgi programına hoş geldiniz.")
+        print("1-Giriş yap\n2-Kaydol\n3-Programdan Çıkış Yap")
+        secim1=input()
+        if secim1=="2":
+            k_adi=input("Kullanıcı adınızı belirleyin : ")
+            sifre=input("Şifrenizi belirleyin = ")
+            if len(sifre)<4:
+                print("Sifreniz adınız minumum 4 karakter olabilir")
+                continue
+            c.execute("INSERT INTO users (k_adi, sifre) VALUES (?, ?)", (k_adi, sifre))
+            print("Kayıt başarılı! Giriş yap diyerek programa gir.")
             continue
-        c.execute("INSERT INTO users (k_adi, sifre, Yasadigi_il) VALUES (?, ?, ?)", (k_adi, sifre, il))
-        print("Kayıt başarılı! Giriş yap diyerek programa gir.")
-        
-while(True):
-    print("Hoş geldin {} açılan menüden işlemini seç".format(k_adi))
-    print("1-İl girerek geçmiş afetler hakkında bilgi al")
-    print("2-Afetler hakkında bilgi sahibi ol")
-    print("3-Depremden korkmalı mıyım?")
-    print("4-Deprem bağışı yapmak istiyorum.")
-    print("5-Çıkış yap")
-    secim2=int(input())
-    if secim2==1:
-        g = İlBilgileri()
-        print(g)
-    elif secim2==2:
-        AfetBilgileri(k_adi)
-    elif secim2==3:
-        DepremTesti()
-    elif secim2==4:
-        deprembagisi()
-    elif secim2==5:
-        break
+        elif secim1=="1":
+            k_adi=input("Kullanıcı adınız : ")
+            sifre=input("Parolanız : ")      
+            c.execute("SELECT * FROM users WHERE k_adi=? AND sifre=?", (k_adi, sifre))
+            result = c.fetchone()
+            if result:
+                print("Giriş başarılı!")
+                menu(k_adi,sifre)
+                c.close()
+                break
+            else:
+                print("Kullanıcı adı veya şifre yanlış!")
+        elif secim1=="3":
+            break
+
+
+
+
